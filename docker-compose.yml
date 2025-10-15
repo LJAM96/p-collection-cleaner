@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  plex-clean:
+    build: .
+    image: plex-clean:latest
+    container_name: plex-collection-cleanup
+    environment:
+      # REQUIRED: Your Plex server details
+      PLEX_URL: "http://host.docker.internal:32400"  # Change this to your Plex server URL
+      PLEX_TOKEN: "YOUR_PLEX_TOKEN_HERE"             # Replace with your actual Plex token
+
+      # SCHEDULE CONFIGURATION (cron format: minute hour day_of_month month day_of_week)
+      PLEX_SCHEDULE: "0 2 * * 0"        # Default: 2 AM every Sunday
+      # Examples:
+      # "0 3 * * 1"     - 3 AM every Monday
+      # "30 1 * * *"    - 1:30 AM every day
+      # "0 12 1 * *"    - 12 PM on the 1st of every month
+      # "*/30 * * * *"  - Every 30 minutes (for testing)
+
+      # EXECUTION MODE
+      PLEX_RUN_ONCE: "false"           # Set to "true" to run immediately and exit (bypasses schedule)
+
+      # CLEANUP CONFIGURATION
+      PLEX_DRY_RUN: "true"        # Set to "false" to actually remove collections
+      PLEX_NO_CONFIRM: "true"     # Set to "false" for interactive confirmation prompts
+      PLEX_DEBUG: "false"         # Set to "true" for detailed debug output
+
+      # LABEL-BASED DELETION (in addition to unlabeled collections)
+      PLEX_DELETE_LABELS: ""      # Comma-separated list of exact labels to delete (e.g., "kometa,temp,auto")
+      PLEX_DELETE_LABEL_PATTERNS: ""  # Comma-separated wildcard patterns (e.g., "kometa*,*-temp,auto-*")
+      # Examples:
+      # PLEX_DELETE_LABELS: "kometa,temporary"
+      # PLEX_DELETE_LABEL_PATTERNS: "kometa*,*-auto,temp-*"
+
+    # For scheduled mode: keep running, for run-once: exit after completion
+    restart: unless-stopped
+
+    # Enable TTY for interactive prompts (when PLEX_NO_CONFIRM=false)
+    tty: true
+    stdin_open: true
+
+    # Mount volume for logs
+    volumes:
+      - ./logs:/var/log
+
+    # Network mode for accessing host services
+    network_mode: "host"
+
+# USAGE INSTRUCTIONS:
+#
+# 1. Scheduled mode (default - runs on cron schedule):
+#    docker-compose up -d
+#
+#    View logs: docker-compose logs -f
+#    Stop: docker-compose down
+#
+# 2. Run once immediately (bypasses schedule):
+#    docker-compose run --rm -e PLEX_RUN_ONCE=true plex-clean
+#
+# 3. Run once with different settings:
+#    docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_DRY_RUN=false -e PLEX_NO_CONFIRM=true plex-clean
+#
+# 4. Interactive run (with confirmations):
+#    docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_NO_CONFIRM=false plex-clean
+#
+# 5. Debug mode:
+#    docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_DEBUG=true plex-clean
+#
+# 6. Delete collections with specific labels (in addition to unlabeled ones):
+#    Edit PLEX_DELETE_LABELS: "kometa,temp"
+#    Edit PLEX_DELETE_LABEL_PATTERNS: "kometa*,*-auto"
+#
+# 7. Change schedule: Edit PLEX_SCHEDULE environment variable above
+#    Use cron format: "minute hour day_of_month month day_of_week"
+#
+# 8. View scheduled service logs:
+#    docker-compose exec plex-clean tail -f /var/log/plex-cleanup.log
