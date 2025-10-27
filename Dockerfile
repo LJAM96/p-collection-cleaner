@@ -27,7 +27,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy application code and scheduler script
-COPY plex_clean_collections.py .
+COPY p-collection-cleaner.py .
 COPY scheduler.sh .
 
 # Make scheduler script executable

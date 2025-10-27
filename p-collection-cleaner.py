@@ -339,7 +339,7 @@ Environment Variables:
   PLEX_DEBUG        Set to 'true' to enable debug logging
 
 Docker Example:
-  docker run -e PLEX_URL=http://host.docker.internal:32400 -e PLEX_TOKEN=xyz123 plex-clean
+  docker run -e PLEX_URL=http://host.docker.internal:32400 -e PLEX_TOKEN=xyz123 p-collection-cleaner
 
 Both command line arguments and environment variables are supported.
 Command line arguments take precedence over environment variables.

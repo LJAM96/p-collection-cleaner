@@ -1,10 +1,10 @@
 version: '3.8'
 
 services:
-  plex-clean:
+  p-collection-cleaner:
     build: .
-    image: plex-clean:latest
-    container_name: plex-collection-cleanup
+    image: p-collection-cleaner:latest
+    container_name: p-collection-cleaner
     environment:
       # REQUIRED: Your Plex server details
       PLEX_URL: "http://host.docker.internal:32400"  # Change this to your Plex server URL
@@ -56,16 +56,16 @@ services:
 #    Stop: docker-compose down
 #
 # 2. Run once immediately (bypasses schedule):
-#    docker-compose run --rm -e PLEX_RUN_ONCE=true plex-clean
+#    docker-compose run --rm -e PLEX_RUN_ONCE=true p-collection-cleaner
 #
 # 3. Run once with different settings:
-#    docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_DRY_RUN=false -e PLEX_NO_CONFIRM=true plex-clean
+#    docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_DRY_RUN=false -e PLEX_NO_CONFIRM=true p-collection-cleaner
 #
 # 4. Interactive run (with confirmations):
-#    docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_NO_CONFIRM=false plex-clean
+#    docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_NO_CONFIRM=false p-collection-cleaner
 #
 # 5. Debug mode:
-#    docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_DEBUG=true plex-clean
+#    docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_DEBUG=true p-collection-cleaner
 #
 # 6. Delete collections with specific labels (in addition to unlabeled ones):
 #    Edit PLEX_DELETE_LABELS: "kometa,temp"
@@ -75,4 +75,4 @@ services:
 #    Use cron format: "minute hour day_of_month month day_of_week"
 #
 # 8. View scheduled service logs:
-#    docker-compose exec plex-clean tail -f /var/log/plex-cleanup.log
+#    docker-compose exec p-collection-cleaner tail -f /var/log/plex-cleanup.log

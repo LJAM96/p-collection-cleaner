@@ -31,7 +31,7 @@ fi
 # If RUN_ONCE is true, run immediately and exit
 if [ "$RUN_ONCE" = "true" ]; then
     echo "Running cleanup immediately..."
-    cd /app && python plex_clean_collections.py
+    cd /app && python p-collection-cleaner.py
     echo "Cleanup completed!"
     exit 0
 fi
@@ -43,7 +43,7 @@ if ! command -v crontab >/dev/null 2>&1; then
 fi
 
 # Create the cron command
-CRON_CMD="cd /app && python plex_clean_collections.py"
+CRON_CMD="cd /app && python p-collection-cleaner.py"
 
 # Add environment variables to the cron command
 CRON_ENV="PLEX_URL='$PLEX_URL' PLEX_TOKEN='$PLEX_TOKEN' PLEX_DRY_RUN='${PLEX_DRY_RUN:-true}' PLEX_NO_CONFIRM='${PLEX_NO_CONFIRM:-true}' PLEX_DEBUG='${PLEX_DEBUG:-false}'"
@@ -71,7 +71,7 @@ chmod 666 /var/log/plex-cleanup.log
 
 echo "Scheduler setup complete!"
 echo ""
-echo "To run immediately (testing): docker-compose exec plex-clean-scheduled python plex_clean_collections.py"
+echo "To run immediately (testing): docker-compose exec p-collection-cleaner python p-collection-cleaner.py"
 echo "Log file: /var/log/plex-cleanup.log"
 echo ""
 echo "Cron schedule format: minute hour day_of_month month day_of_week"

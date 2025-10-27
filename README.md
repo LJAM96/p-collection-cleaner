@@ -26,12 +26,12 @@ cp .env.example .env
 
 2. **Run dry-run to test:**
 ```bash
-docker-compose up plex-clean
+docker-compose up p-collection-cleaner
 ```
 
 3. **Execute cleanup (after confirming dry-run results):**
 ```bash
-docker-compose --profile execute up plex-clean-execute
+docker-compose --profile execute up p-collection-cleaner-execute
 ```
 
 ### Option 2: Local Python
@@ -43,7 +43,7 @@ pip install -r requirements.txt
 
 2. **Run script:**
 ```bash
-python plex_clean_collections.py --server-url http://your-server:32400 --token YOUR_TOKEN
+python p-collection-cleaner.py --server-url http://your-server:32400 --token YOUR_TOKEN
 ```
 
 ## Docker Usage (Detailed)
@@ -62,7 +62,7 @@ python plex_clean_collections.py --server-url http://your-server:32400 --token Y
 
 **Basic dry-run:**
 ```bash
-docker run -e PLEX_URL=http://host.docker.internal:32400 -e PLEX_TOKEN=xyz123 plex-clean
+docker run -e PLEX_URL=http://host.docker.internal:32400 -e PLEX_TOKEN=xyz123 p-collection-cleaner
 ```
 
 **Execute with debug output:**
@@ -71,23 +71,23 @@ docker run -e PLEX_URL=http://192.168.1.100:32400 \
            -e PLEX_TOKEN=xyz123 \
            -e PLEX_DRY_RUN=false \
            -e PLEX_DEBUG=true \
-           plex-clean
+           p-collection-cleaner
 ```
 
 **Using docker-compose profiles:**
 ```bash
 # Dry run with debug
-docker-compose --profile debug up plex-clean-debug
+docker-compose --profile debug up p-collection-cleaner-debug
 
 # Execute without confirmation
-docker-compose --profile execute up plex-clean-execute
+docker-compose --profile execute up p-collection-cleaner-execute
 ```
 
 ### Building the Docker Image
 
 ```bash
 # Build locally
-docker build -t plex-clean .
+docker build -t p-collection-cleaner .
 
 # Or use docker-compose
 docker-compose build
@@ -110,12 +110,12 @@ Or visit: https://support.plex.tv/articles/204059436-finding-an-authentication-t
 ```bash
 export PLEX_URL=http://localhost:32400
 export PLEX_TOKEN=your_token_here
-python plex_clean_collections.py
+python p-collection-cleaner.py
 ```
 
 **Command Line Arguments:**
 ```bash
-python plex_clean_collections.py --server-url http://localhost:32400 --token YOUR_TOKEN
+python p-collection-cleaner.py --server-url http://localhost:32400 --token YOUR_TOKEN
 ```
 
 ### Command Line Options
@@ -131,16 +131,16 @@ python plex_clean_collections.py --server-url http://localhost:32400 --token YOU
 
 ```bash
 # Dry run with debug logging
-python plex_clean_collections.py --server-url http://localhost:32400 --token abc123 --debug
+python p-collection-cleaner.py --server-url http://localhost:32400 --token abc123 --debug
 
 # Execute without confirmation prompts
-python plex_clean_collections.py --server-url http://localhost:32400 --token abc123 --execute --no-confirm
+python p-collection-cleaner.py --server-url http://localhost:32400 --token abc123 --execute --no-confirm
 
 # Using environment variables
 export PLEX_URL=http://localhost:32400
 export PLEX_TOKEN=abc123
 export PLEX_DEBUG=true
-python plex_clean_collections.py
+python p-collection-cleaner.py
 ```
 
 ## How It Works
@@ -258,7 +258,7 @@ The provided `docker-compose.yml` uses `network_mode: "host"` for easy access to
 
 ## Files Created
 
-- `plex_clean_collections.py` - Main Python script
+- `p-collection-cleaner.py` - Main Python script
 - `requirements.txt` - Python dependencies
 - `Dockerfile` - Docker container configuration
 - `docker-compose.yml` - Docker Compose setup with multiple profiles
