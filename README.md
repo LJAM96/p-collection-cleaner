@@ -1,4 +1,5 @@
-# Plex Collection Cleanup Tool
+# P Collection Cleanup Tool
+
 
 A Python script that removes collections from your Plex server that don't have any labels, while keeping all labeled collections intact.
 
@@ -21,17 +22,32 @@ A Python script that removes collections from your Plex server that don't have a
 1. **Create environment file:**
 ```bash
 cp .env.example .env
+
 # Edit .env with your Plex server details
+
+
 ```
 
 2. **Run dry-run to test (scheduled service):**
 ```bash
 docker-compose up p-collection-cleaner
+
+
+
 ```
 
 3. **Execute cleanup immediately (after confirming dry-run results):**
+
+
+
+
 ```bash
 docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_DRY_RUN=false p-collection-cleaner
+
+
+
+
+
 ```
 
 ### Option 2: Local Python
@@ -44,6 +60,9 @@ pip install -r requirements.txt
 2. **Run script:**
 ```bash
 python p-collection-cleaner.py --server-url http://your-server:32400 --token YOUR_TOKEN
+
+
+
 ```
 
 ## Docker Usage (Detailed)
@@ -53,8 +72,11 @@ python p-collection-cleaner.py --server-url http://your-server:32400 --token YOU
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
 | `PLEX_URL` | Plex server URL | - | ✅ |
+
 | `PLEX_TOKEN` | Plex authentication token | - | ✅ |
+
 | `PLEX_DRY_RUN` | Set to `false` to execute | `true` | ❌ |
+
 | `PLEX_NO_CONFIRM` | Skip confirmation prompts | `false` | ❌ |
 | `PLEX_DEBUG` | Enable debug logging | `false` | ❌ |
 
@@ -272,3 +294,9 @@ The provided `docker-compose.yml` uses `network_mode: "host"` for easy access to
 ## Contributing
 
 Feel free to submit issues, feature requests, or pull requests to improve this tool.
+
+
+
+
+
+
