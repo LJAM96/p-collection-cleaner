@@ -24,14 +24,14 @@ cp .env.example .env
 # Edit .env with your Plex server details
 ```
 
-2. **Run dry-run to test:**
+2. **Run dry-run to test (scheduled service):**
 ```bash
 docker-compose up p-collection-cleaner
 ```
 
-3. **Execute cleanup (after confirming dry-run results):**
+3. **Execute cleanup immediately (after confirming dry-run results):**
 ```bash
-docker-compose --profile execute up p-collection-cleaner-execute
+docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_DRY_RUN=false p-collection-cleaner
 ```
 
 ### Option 2: Local Python
@@ -74,13 +74,13 @@ docker run -e PLEX_URL=http://192.168.1.100:32400 \
            p-collection-cleaner
 ```
 
-**Using docker-compose profiles:**
+**Additional docker-compose commands:**
 ```bash
-# Dry run with debug
-docker-compose --profile debug up p-collection-cleaner-debug
+# Dry run with debug logging
+docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_DEBUG=true p-collection-cleaner
 
 # Execute without confirmation
-docker-compose --profile execute up p-collection-cleaner-execute
+docker-compose run --rm -e PLEX_RUN_ONCE=true -e PLEX_DRY_RUN=false -e PLEX_NO_CONFIRM=true p-collection-cleaner
 ```
 
 ### Building the Docker Image
@@ -91,6 +91,10 @@ docker build -t p-collection-cleaner .
 
 # Or use docker-compose
 docker-compose build
+
+## Continuous Integration
+
+The repository includes a GitHub Actions workflow (`.github/workflows/docker-build.yml`) that builds the Docker image on pushes to the `main` branch, pull requests, or manual `workflow_dispatch` runs. This job uses Docker Buildx to validate the `Dockerfile` without pushing the image, giving you quick feedback that the container still builds successfully.
 ```
 
 ## Local Python Usage
@@ -261,7 +265,7 @@ The provided `docker-compose.yml` uses `network_mode: "host"` for easy access to
 - `p-collection-cleaner.py` - Main Python script
 - `requirements.txt` - Python dependencies
 - `Dockerfile` - Docker container configuration
-- `docker-compose.yml` - Docker Compose setup with multiple profiles
+- `docker-compose.yml` - Docker Compose configuration for scheduled and one-off runs
 - `.env.example` - Environment variable template
 - `README.md` - This documentation
 
