@@ -116,7 +116,7 @@ docker-compose build
 
 ## Continuous Integration
 
-The repository includes a GitHub Actions workflow (`.github/workflows/docker-build.yml`) that builds a multi-platform Docker image on pushes to the `main` branch, pull requests, or manual `workflow_dispatch` runs. This job uses Docker Buildx to create images that support both `linux/amd64` and `linux/arm64` architectures, validating that the container builds successfully on a variety of devices.
+The repository includes a GitHub Actions workflow (`.github/workflows/docker-build.yml`) that builds and pushes a multi-platform Docker image to GitHub Container Registry (GHCR) on pushes to the `main` branch, pull requests, or manual `workflow_dispatch` runs. This job uses Docker Buildx to create images that support both `linux/amd64` and `linux/arm64` architectures, ensuring the container can run on a wide variety of devices and is accessible via GHCR.
 ```
 
 ## Local Python Usage
