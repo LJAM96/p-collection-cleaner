@@ -116,7 +116,12 @@ docker-compose build
 
 ## Continuous Integration
 
-The repository includes a GitHub Actions workflow (`.github/workflows/docker-build.yml`) that builds and pushes a multi-platform Docker image to GitHub Container Registry (GHCR) on pushes to the `main` branch, pull requests, or manual `workflow_dispatch` runs. This job uses Docker Buildx to create images that support both `linux/amd64` and `linux/arm64` architectures, ensuring the container can run on a wide variety of devices and is accessible via GHCR.
+The repository includes a GitHub Actions workflow (`.github/workflows/docker-build.yml`) that builds and pushes a multi-platform Docker image to GitHub Container Registry (GHCR) on pushes to the `main` branch. This job uses Docker Buildx to create images that support both `linux/amd64` and `linux/arm64` architectures.
+
+The image is tagged with the git commit SHA, and `latest` is used for the `main` branch. You can pull the latest image using:
+```bash
+docker pull ghcr.io/ljam96/p-collection-cleaner:latest
+```
 ```
 
 ## Local Python Usage
